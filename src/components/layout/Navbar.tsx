@@ -7,15 +7,16 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
-    const [dark, setDark] = React.useState(true);
+    // Default to false (Light mode) matching new :root defaults
+    const [dark, setDark] = React.useState(false);
     const toggleTheme = () => setDark(!dark);
 
     React.useEffect(() => {
         const html = document.documentElement;
         if (dark) {
-            html.classList.remove('light');
+            html.classList.add('dark');
         } else {
-            html.classList.add('light');
+            html.classList.remove('dark');
         }
     }, [dark]);
 
