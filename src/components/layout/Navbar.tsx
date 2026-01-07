@@ -2,7 +2,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Moon, Sun, Menu } from 'lucide-react';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+    onMenuClick: () => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
     const [dark, setDark] = React.useState(true);
     const toggleTheme = () => setDark(!dark);
 
@@ -16,10 +20,19 @@ export const Navbar: React.FC = () => {
     }, [dark]);
 
     return (
-        <nav className="fixed top-0 left-0 right-0 h-16 flex items-center justify-between px-6 glass transition-smooth z-50">
-            <div className="flex items-center space-x-2">
-                <Menu className="h-5 w-5 text-primary" />
-                <span className="text-xl font-bold text-primary">Market Dashboard</span>
+        <nav className="fixed top-0 left-0 right-0 h-16 flex items-center justify-between px-6 glass transition-smooth z-50 bg-background/80 backdrop-blur-md border-b border-border">
+            <div className="flex items-center space-x-4">
+                <button
+                    onClick={onMenuClick}
+                    className="p-1 hover:bg-muted rounded-md md:hidden"
+                >
+                    <Menu className="h-6 w-6 text-primary" />
+                </button>
+                <Link to="/" className="flex items-center space-x-2">
+                    <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        Market Dashboard
+                    </span>
+                </Link>
             </div>
             <div className="flex items-center space-x-4">
                 <input
