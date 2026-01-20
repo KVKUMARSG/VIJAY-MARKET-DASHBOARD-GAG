@@ -3,120 +3,150 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design System – HSL color tokens (dark mode default) */
+/* Design System – Premium HSL color tokens */
 :root {
-  /* Default: White background, Dark Blue text */
-  --background: 0 0% 100%;
-  /* White */
+  /* Light Mode (Premium White/Gray) */
+  --background: 210 40% 98%;
+  /* Soft white-gray */
   --foreground: 222 47% 11%;
-  /* Deep Navy Blue */
-  --primary: 221 83% 53%;
-  /* Vivid Blue */
-  --primary-glow: 221 83% 70%;
-  --secondary: 210 40% 96.1%;
-  /* Very Light Blue/Gray */
-  --accent: 199 89% 48%;
-  /* Cyan/Blue Accent */
-  --success: 142 76% 36%;
-  --danger: 346 84% 61%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  /* Deep Navy */
   --card: 0 0% 100%;
+  /* Pure White */
   --card-foreground: 222 47% 11%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+
+  --primary: 221 83% 53%;
+  /* Bright Blue */
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222 47% 11%;
+
+  --muted: 214 32% 91%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 262 83% 58%;
+  /* Vivid Purple/Violet Accent */
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+
   --border: 214.3 31.8% 91.4%;
-  /* Light border */
   --input: 214.3 31.8% 91.4%;
   --ring: 221 83% 53%;
+
+  --radius: 0.75rem;
 }
 
-/* Dark mode override */
+/* Dark Mode (Premium Aurora Dark) */
 .dark {
-  --background: 222 47% 11%;
-  /* Deep Navy Blue */
-  --foreground: 210 40% 98%;
-  /* White/Light */
-  --primary: 217 91% 60%;
-  --primary-glow: 187 80% 55%;
-  --secondary: 217 19% 27%;
-  --accent: 199 89% 48%;
-  --muted: 217 19% 27%;
-  --card: 222 47% 11%;
-  /* Dark Card */
-  --border: 217 19% 27%;
+  /* Deep Blue/Violet tint background */
+  --background: 224 71% 4%;
+  --foreground: 213 31% 91%;
+
+  --card: 224 71% 4%;
+  --card-foreground: 213 31% 91%;
+
+  --popover: 224 71% 4%;
+  --popover-foreground: 213 31% 91%;
+
+  /* Electric Blue/Cyan Primary */
+  --primary: 210 100% 50%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 222 47% 11%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 223 47% 11%;
+  --muted-foreground: 215 20% 65%;
+
+  /* Neon Purple Accent */
+  --accent: 263 70% 50%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 216 34% 17%;
+  --input: 216 34% 17%;
+  --ring: 210 100% 50%;
 }
 
-/* Global styles */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  font-family: 'DM Sans', system-ui, sans-serif;
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
-}
-
-/* Glassmorphism helper */
-.glass {
-  backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.7);
-  /* White glass for light mode */
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.dark .glass {
-  background: rgba(15, 23, 42, 0.7);
-  /* Dark Navy glass for dark mode */
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Transition utility */
-.transition-smooth {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Animation keyframes */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+@layer base {
+  * {
+    @apply border-border;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full hover:bg-muted-foreground/50 transition-colors;
   }
 }
 
-.animate-slide-up {
-  animation: slideUp 0.5s ease-out forwards;
-  animation-delay: calc(var(--delay, 0) * 100ms);
+@layer components {
+
+  /* Premium Glassmorphism */
+  .glass {
+    @apply backdrop-blur-xl bg-white/70 border border-white/20 shadow-lg dark:bg-slate-900/60 dark:border-white/10;
+  }
+
+  .glass-card {
+    @apply relative overflow-hidden rounded-xl border border-white/20 bg-white/50 backdrop-blur-md shadow-sm transition-all duration-300 hover:shadow-md dark:border-white/10 dark:bg-slate-900/40;
+  }
+
+  .glass-panel {
+    @apply bg-background/60 backdrop-blur-lg border-r border-border/50;
+  }
+
+  /* Text Gradients */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent;
+  }
+
+  /* Smooth Transitions */
+  .transition-smooth {
+    @apply transition-all duration-300 cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
 
-/* Card hover effect */
-.card-hover-effect {
-  @apply transition-smooth;
-}
-
-.card-hover-effect:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0, 184, 212, 0.2);
-}
-
-/* Glow pulse */
-@keyframes glowPulse {
-
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(0, 184, 212, 0.3);
+/* Animations */
+@keyframes mesh {
+  0% {
+    background-position: 0% 50%;
   }
 
   50% {
-    box-shadow: 0 0 40px rgba(0, 184, 212, 0.6);
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }
 
-.glow-pulse {
-  animation: glowPulse 2s infinite;
+.animate-mesh {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: mesh 15s ease infinite;
 }

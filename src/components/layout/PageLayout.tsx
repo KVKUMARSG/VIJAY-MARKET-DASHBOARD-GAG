@@ -1,24 +1,35 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { ReactNode } from 'react';
 import { Navbar } from './Navbar';
-import { SEO } from './SEO';
 import { Sidebar } from './Sidebar';
+import { Outlet } from 'react-router-dom';
 
-export const PageLayout: React.FC = () => {
+interface PageLayoutProps {
+    children?: ReactNode;
+}
+
+export const PageLayout: React.FC<PageLayoutProps> = () => {
     const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
     return (
-        <div className="min-h-screen bg-background text-foreground font-sans antialiased flex flex-col">
-            <SEO title="Dashboard" />
-            <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
-            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+        <div className="min-h-screen bg-background text-foreground relative overflow-hidden font-sans">
+            {/* Ambient Background Mesh */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-primary/20 blur-[120px] mix-blend-screen animate-pulse" />
+                <div className="absolute top-[20%] right-[10%] w-[40%] h-[40%] rounded-full bg-accent/20 blur-[120px] mix-blend-screen animate-pulse delay-1000" />
+                <div className="absolute -bottom-[10%] left-[20%] w-[60%] h-[60%] rounded-full bg-secondary/30 blur-[100px] animate-pulse delay-2000" />
+            </div>
 
-            <main className={`
-                pt-20 px-4 md:px-8 pb-8 transition-all duration-300 ease-in-out
-                md:ml-64 
-                max-w-[1920px] mx-auto w-full
-            `}>
-                <Outlet />
+            <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
+
+            <Sidebar
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+            />
+
+            <main className="relative z-10 pt-24 pb-8 px-4 md:pl-72 md:pr-8 transition-all duration-300 min-h-screen flex flex-col">
+                <div className="flex-1 animate-fade-in-up">
+                    <Outlet />
+                </div>
             </main>
         </div>
     );
